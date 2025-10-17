@@ -68,7 +68,6 @@
             e.preventDefault();
             form.querySelector('#name').value = '';
             form.querySelector('#email').value = '';
-            // Clear all added songs
             document.getElementById('morningContainer').innerHTML = '';
             document.getElementById('afternoonContainer').innerHTML = '';
             document.getElementById('eveningContainer').innerHTML = '';
@@ -91,16 +90,12 @@
             const container = document.getElementById(period + 'Container');
             const checkboxItem = document.createElement('div');
             checkboxItem.className = 'checkbox-item';
-            
             const uniqueId = `${period}-${Date.now()}`;
-            
             checkboxItem.innerHTML = `
                 <input type="checkbox" id="${uniqueId}" name="${period}" value="${songName}" checked>
                 <label for="${uniqueId}">${songName}</label>
                 <button type="button" class="remove-btn">×</button>`;
-            
             container.appendChild(checkboxItem);
-            
             checkboxItem.querySelector('.remove-btn').addEventListener('click', () => {
                 container.removeChild(checkboxItem);
             });
@@ -109,7 +104,6 @@
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // This condition checks if the placeholder text is still there.
             if (SCRIPT_URL === 'PASTE_YOUR_NEW_DEPLOYMENT_URL_HERE') {
                 showMessage('ข้อผิดพลาด: กรุณาใส่ URL ของ Web App ในไฟล์ HTML', 'error');
                 return;
@@ -144,6 +138,7 @@
                 const response = await fetch(SCRIPT_URL, {
                     method: 'POST',
                     mode: 'cors',
+                    redirect: 'follow', // ✨ เพิ่มบรรทัดนี้เข้าไป ✨
                     body: JSON.stringify(data),
                     headers: { 'Content-Type': 'application/json' }
                 });
