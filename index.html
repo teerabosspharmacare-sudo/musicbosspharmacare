@@ -57,7 +57,8 @@
     </div>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzlYCzz6W9dzs1fbNoNXriQ2PBbS7wCAfvDdJu7tOnG8WHffd64iVBE35s2g4tntWFNCQ/exec'; // 🔴 URL สำคัญ!
+        // 🔴 วาง URL ใหม่ล่าสุดที่ทดสอบแล้วที่นี่!
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwQQDGtpo0DfNJ2J5XHaXKmZPntK3Jd-pGejhOe0rzahQgV2tPFGstEGmVGnPCPg-sO/exec'; 
 
         const form = document.getElementById('musicForm');
         const messageDiv = document.getElementById('message');
@@ -65,9 +66,7 @@
         const submitBtn = document.getElementById('submitBtn');
         
         form.addEventListener('reset', (e) => {
-            e.preventDefault();
-            form.querySelector('#name').value = '';
-            form.querySelector('#email').value = '';
+            form.querySelectorAll('input[type="text"], input[type="email"]').forEach(input => input.value = '');
             document.getElementById('morningContainer').innerHTML = '';
             document.getElementById('afternoonContainer').innerHTML = '';
             document.getElementById('eveningContainer').innerHTML = '';
@@ -104,7 +103,7 @@
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            if (SCRIPT_URL === 'PASTE_YOUR_NEW_DEPLOYMENT_URL_HERE') {
+            if (SCRIPT_URL === 'PASTE_YOUR_NEW_DEPLOYMENT_URL_HERE' || !SCRIPT_URL) {
                 showMessage('ข้อผิดพลาด: กรุณาใส่ URL ของ Web App ในไฟล์ HTML', 'error');
                 return;
             }
@@ -138,7 +137,7 @@
                 const response = await fetch(SCRIPT_URL, {
                     method: 'POST',
                     mode: 'cors',
-                    redirect: 'follow', // ✨ เพิ่มบรรทัดนี้เข้าไป ✨
+                    redirect: 'follow', // ช่วยแก้ปัญหา Redirect
                     body: JSON.stringify(data),
                     headers: { 'Content-Type': 'application/json' }
                 });
@@ -168,10 +167,10 @@
             messageDiv.className = `message ${type}`;
             if (type !== 'error') {
                  setTimeout(() => {
-                    if(messageDiv.textContent === text) {
-                       messageDiv.className = 'message';
-                    }
-                }, 5000);
+                     if(messageDiv.textContent === text) {
+                         messageDiv.className = 'message';
+                     }
+                 }, 5000);
             }
         }
     </script>
