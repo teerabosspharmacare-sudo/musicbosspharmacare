@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Login</title>
+    <style>
+        :root{--bg:#f5f7fb;--card:#fff;--accent:#2563eb;--muted:#6b7280}
+        *{box-sizing:border-box}
+        html,body{height:100%}
+        body{
+            margin:0;
+            font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+            background:linear-gradient(180deg,var(--bg),#eef2ff 60%);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            padding:24px;
+            color:#0f172a;
+        }
+        .card{
+            width:100%;
+            max-width:420px;
+            background:var(--card);
+            padding:28px;
+            border-radius:12px;
+            box-shadow:0 8px 30px rgba(2,6,23,0.08);
+            border:1px solid rgba(15,23,42,0.04);
+        }
+        h1{margin:0 0 14px;font-size:20px}
+        label{display:block;font-size:13px;margin-top:12px;color:var(--muted)}
+        input[type="email"],
+        input[type="password"]{
+            width:100%;
+            padding:10px 12px;
+            margin-top:6px;
+            border:1px solid #e6e9ef;
+            border-radius:8px;
+            font-size:15px;
+            background:#fff;
+        }
+        .pw-row{display:flex;gap:8px;align-items:center}
+        .pw-row button{
+            padding:8px 10px;border:1px solid #e6e9ef;background:#fff;border-radius:8px;cursor:pointer;font-size:13px;color:var(--muted)
+        }
+        .meta{display:flex;align-items:center;justify-content:space-between;margin-top:12px}
+        .checkbox{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:14px}
+        button[type="submit"]{
+            width:100%;
+            margin-top:16px;
+            padding:10px 12px;
+            background:linear-gradient(90deg,var(--accent),#1e40af);
+            color:#fff;border:0;border-radius:10px;font-size:15px;cursor:pointer;
+            box-shadow:0 6px 18px rgba(37,99,235,0.14);
+        }
+        .hint{margin-top:12px;font-size:13px;color:var(--muted);text-align:center}
+        .hint a{color:var(--accent);text-decoration:none}
+        .error{color:#b91c1c;font-size:13px;height:18px;margin-top:6px}
+        @media (max-width:420px){ .card{padding:18px;border-radius:10px} }
+    </style>
+</head>
+<body>
+    <main class="card" role="main" aria-labelledby="loginTitle">
+        <h1 id="loginTitle">Sign in to your account</h1>
+
+        <form id="loginForm" novalidate>
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@example.com" />
+            <div class="error" id="emailError" aria-live="polite"></div>
+
+            <label for="password">Password</label>
+            <div class="pw-row" style="margin-top:6px;">
+                <input id="password" name="password" type="password" autocomplete="current-password" required minlength="6" placeholder="••••••••" />
+                <button type="button" id="togglePw" aria-pressed="false" aria-label="Show password">Show</button>
+            </div>
+            <div class="error" id="passwordError" aria-live="polite"></div>
+
+            <div class="meta">
+                <label class="checkbox"><input id="remember" name="remember" type="checkbox" /> Remember me</label>
+                <a href="#" style="font-size:13px;color:var(--muted);text-decoration:none">Forgot?</a>
+            </div>
+
+            <button type="submit" id="submitBtn">Sign in</button>
+
+            <p class="hint">Don't have an account? <a href="#">Create one</a></p>
+        </form>
+    </main>
+
+    <script>
+        const form = document.getElementById('loginForm');
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+        const emailError = document.getElementById('emailError');
+        const passwordError = document.getElementById('passwordError');
+        const toggle = document.getElementById('togglePw');
+
+        function validateEmail() {
+            if (!email.value) { emailError.textContent = 'Email is required.'; return false; }
+            if (!email.checkValidity()) { emailError.textContent = 'Enter a valid email address.'; return false; }
+            emailError.textContent = ''; return true;
+        }
+
+        function validatePassword() {
+            if (!password.value) { passwordError.textContent = 'Password is required.'; return false; }
+            if (password.value.length < 6) { passwordError.textContent = 'Password must be at least 6 characters.'; return false; }
+            passwordError.textContent = ''; return true;
+        }
+
+        email.addEventListener('input', validateEmail);
+        password.addEventListener('input', validatePassword);
+
+        toggle.addEventListener('click', () => {
+            const isPw = password.type === 'password';
+            password.type = isPw ? 'text' : 'password';
+            toggle.textContent = isPw ? 'Hide' : 'Show';
+            toggle.setAttribute('aria-pressed', String(!isPw));
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const ok = validateEmail() & validatePassword();
+            if (!ok) return;
+
+            // Example POST - adapt URL and handling to your backend.
+            try {
+                const resp = await fetch('/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: email.value,
+                        password: password.value,
+                        remember: document.getElementById('remember').checked
+                    })
+                });
+
+                if (resp.ok) {
+                    // redirect on success
+                    window.location.href = '/dashboard';
+                } else {
+                    const text = await resp.text();
+                    alert('Login failed: ' + (text || resp.statusText));
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Network error. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>
