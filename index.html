@@ -57,7 +57,7 @@
     </div>
 
     <script>
-        const SCRIPT_URL = 'PASTE_YOUR_NEW_DEPLOYMENT_URL_HERE'; // 🔴 URL สำคัญ!
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwvisc0MphEXWcdKoJS_004xjhseR5ZIZOmBO3A8XMqQ3MKodOM_rY-v8rUx-SGXcrEhQ/exec'; // 🔴 URL สำคัญ!
 
         const form = document.getElementById('musicForm');
         const messageDiv = document.getElementById('message');
@@ -109,7 +109,8 @@
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            if (SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbwvisc0MphEXWcdKoJS_004xjhseR5ZIZOmBO3A8XMqQ3MKodOM_rY-v8rUx-SGXcrEhQ/exec') {
+            // This condition checks if the placeholder text is still there.
+            if (SCRIPT_URL === 'PASTE_YOUR_NEW_DEPLOYMENT_URL_HERE') {
                 showMessage('ข้อผิดพลาด: กรุณาใส่ URL ของ Web App ในไฟล์ HTML', 'error');
                 return;
             }
@@ -181,5 +182,4 @@
     </script>
 </body>
 </html>
-
 
