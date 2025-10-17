@@ -82,18 +82,18 @@
         }
 
         .time-period {
-            background: linear-gradient(135deg, #f5f7fa 0%, #92b3e9 100%);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             border-radius: 15px;
             padding: 20px;
             margin-bottom: 20px;
         }
 
         .time-period.morning {
-            background: linear-gradient(135deg, #a0ec74 0%, #cfe21e 100%);
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
         }
 
         .time-period.afternoon {
-            background: linear-gradient(135deg, #ec96cf 0%, #e09b55 100%);
+            background: linear-gradient(135deg, #ffd89b 0%, #ffa751 100%);
         }
 
         .time-period.evening {
@@ -366,7 +366,7 @@
 
             try {
                 // ส่งข้อมูลไปยัง Google Apps Script
-                const response = await fetch('https://script.google.com/macros/s/AKfycbzKduOpmsj4dYWySd2ojp7_GIr4TEjmDeROiu0zv_mAS1eadgBhCDb0PdoSrNjX1NNILA/exec', {
+                const response = await fetch('https://script.google.com/macros/d/AKfycbzKduOpmsj4dYWySd2ojp7_GIr4TEjmDeROiu0zv_mAS1eadgBhCDb0PdoSrNjX1NNILA/userweb', {
                     method: 'POST',
                     body: JSON.stringify(formDataObj),
                     headers: {
