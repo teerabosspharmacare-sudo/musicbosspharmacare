@@ -100,9 +100,16 @@
             const handleSubmit = async (e) => {
                 e.preventDefault();
                 
-                // ตรวจสอบความถูกต้อง
+                // ตรวจสอบความถูกต้องเบื้องต้น (แม้ HTML5 จะเช็คแล้ว แต่เช็คซ้ำใน JS เพื่อความชัวร์)
                 if (!formData.name || !formData.email) {
                     alert("กรุณากรอกชื่อและอีเมลก่อนส่งข้อมูล");
+                    return;
+                }
+
+                // ตรวจสอบรูปแบบอีเมลแบบง่ายๆ
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(formData.email)) {
+                    alert("กรุณากรอกรูปแบบอีเมลให้ถูกต้อง (เช่น name@example.com)");
                     return;
                 }
 
@@ -172,7 +179,7 @@
                                 </h2>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                     <div className="space-y-2">
-                                        <label className="text-lg font-bold text-slate-600">ชื่อ - นามสกุล <span className="text-red-500">*</span></label>
+                                        <label className="text-lg font-bold text-slate-600">ชื่อ (ผู้ขอเพลง) <span className="text-red-500">*</span></label>
                                         <div className="relative">
                                             <div className="absolute left-3 top-3.5 text-slate-400"><Icons.User size={20}/></div>
                                             <input type="text" name="name" value={formData.name} onChange={handleInputChange} placeholder="ระบุชื่อของคุณ" required
@@ -180,11 +187,18 @@
                                         </div>
                                     </div>
                                     <div className="space-y-2">
-                                        <label className="text-lg font-bold text-slate-600">อีเมล / เบอร์โทรศัพท์ <span className="text-red-500">*</span></label>
+                                        <label className="text-lg font-bold text-slate-600">อีเมล <span className="text-red-500">*</span></label>
                                         <div className="relative">
                                             <div className="absolute left-3 top-3.5 text-slate-400"><Icons.Mail size={20}/></div>
-                                            <input type="text" name="email" value={formData.email} onChange={handleInputChange} placeholder="ระบุช่องทางติดต่อ" required
-                                                className="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none bg-slate-50 focus:bg-white text-base" />
+                                            <input 
+                                                type="email" 
+                                                name="email" 
+                                                value={formData.email} 
+                                                onChange={handleInputChange} 
+                                                placeholder="example@email.com" 
+                                                required
+                                                className="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none bg-slate-50 focus:bg-white text-base" 
+                                            />
                                         </div>
                                     </div>
                                 </div>
@@ -267,7 +281,7 @@
                             </div>
                         )}
                         
-                        <div className="fixed bottom-4 right-4 text-slate-400 text-sm text-right hidden md:block">แบบฟอร์มขอเพลงประชาสัมพันธ์ <br/>Font: Sarabun (Web Version)</div>
+                        <div className="fixed bottom-4 right-4 text-slate-400 text-sm text-right hidden md:block">แบบฟอร์มขอเพลงประชาสัมพันธ์ <br/>Bossphamacare </div>
                     </div>
                 </div>
             );
